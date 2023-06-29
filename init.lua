@@ -1,5 +1,5 @@
 local awful = require("awful")
-local session = require("poppin.session")
+local session = require("modules.poppin.session")
 
 local apps = {}
 local manage = function () end
@@ -80,8 +80,8 @@ end
 
 function toggle(nameOrClient)
     local c = nameOrClient
-    if type(nameOrClient) == "string" then
-        c = apps[name].client
+    if type(c) == "string" then
+        c = apps[c].client
     end
     c.minimized = not c.minimized
     if not c.minimized then
@@ -109,7 +109,7 @@ function popClient(client, ...)
         toggle(client)
         setProperties {
             client = client,
-            properties = geometry(properties or {}, args.position, args.size)
+            properties = geometry(args.properties or {}, args.position, args.size)
         }
     end
     return function () if client.valid then toggle(client) end end
