@@ -112,6 +112,7 @@ function popClient(client, ...)
             properties = geometry(properties or {}, args.position, args.size)
         }
     end
+    return function () if client.valid then toggle(client) end end
 end
 
 function pop(name, command, ...)
