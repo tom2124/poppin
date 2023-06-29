@@ -1,3 +1,14 @@
+This is a very simple fork allowing Poppin' to use existing clients without keeping track of them internally. Pop an existing client like so:
+```lua
+local f = poppin.popClient(client, [position[, size[, properties]]])
+```
+
+This function does not take the `callback` parameter of `poppin.pop`, because if you already have the client, you can just call anything you want on it. 
+
+After using `poppin.popClient`, you can call it again or use the returned zero-argument function to toggle the client's visibility.
+
+___
+
 # Poppin'
 Poppin' is a module for awesome wm which allows the user to toggle a client. You could for example have a client which appears on a keyboard shortcut and toggles when the shortcut is pressed again. Poppin' clients are persistent between awesome restarts.
 

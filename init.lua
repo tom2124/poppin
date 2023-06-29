@@ -78,8 +78,11 @@ function setProperties(app)
     app.client:connect_signal("unfocus", function() app.client.minimized = true end)
 end
 
-function toggle(name)
-    local c = apps[name].client
+function toggle(nameOrClient)
+    local c = nameOrClient
+    if type(nameOrClient) == "string" then
+        c = apps[name].client
+    end
     c.minimized = not c.minimized
     if not c.minimized then
         client.focus = c
@@ -100,11 +103,22 @@ function handleArguments(arguments)
     return sortedArguments
 end
 
+function popClient(client, ...)
+    local args = handleArguments({...})
+    if client.valid then
+        toggle(client)
+        setProperties {
+            client = client,
+            properties = geometry(properties or {}, args.position, args.size)
+        }
+    end
+end
+
 function pop(name, command, ...)
     local args = handleArguments({...})
 
     local app = apps[name]
-    if app == nil then
+    if app == nil and command ~= nil then
         initClient(name, command, args.position, args.size, args.properties,
             args.callback)
     elseif app.client ~= nil and app.client.valid then
@@ -117,5 +131,4 @@ function pop(name, command, ...)
 end
 
 init()
-return { pop = pop, isPoppin = session.isPoppin }
-
+return { pop = pop, isPoppin = session.isPoppin, popClient = popClient }
